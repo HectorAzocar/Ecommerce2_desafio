@@ -1,0 +1,36 @@
+<h2>Carrito de compras</h2>
+
+<% if @order.nil? || @order.order_items.length < 1 %>
+    <h3>No hay productos en el carrito</h3>
+<% else %>
+
+    <table>
+        <thead>
+            <th>producto</th>
+            <th>cantidad</th>
+            <th>precio unitario</th>
+            <th>total</th>
+        </thead>
+
+        <tbody>
+            <% @order_items.each do |item| %>
+                <tr>
+                    <td><%= item.product.name %></td>
+                    <td><%= item.quantity %></td>
+                    <td><%= item.product.price %></td>
+                    <td><%= item.total %></td>
+                    <td><%= link_to  "quitar del carrito", destroy_cart_item_path(item.id), method: :delete %></td>
+                </tr>
+            <% end %>
+
+            <tr>
+                <td colspan="3" style="text-align: right;"><strong>Total</strong></td>
+                <td><%= @order.total %></td>
+            </tr>    
+        </tbody>
+
+    </table>
+
+    <%= link_to  "Pagar con PayPal", pay_with_paypal_order_items_path(order_id: @order.id), method: :post %>
+
+<% end %>
